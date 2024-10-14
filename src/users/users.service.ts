@@ -19,7 +19,7 @@ export class UsersService {
     await queryRunner.connect();
     await queryRunner.startTransaction();
     try {
-      const user = await this.usersRepository.create(createUserDto);
+      const user = await this.usersRepository.save(createUserDto);
       await queryRunner.commitTransaction();
       return user;
     } catch (error) {

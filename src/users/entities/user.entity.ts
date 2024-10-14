@@ -7,6 +7,7 @@ import {
   PrimaryGeneratedColumn,
   BaseEntity,
   OneToMany,
+  Unique,
 } from 'typeorm';
 
 export enum Role {
@@ -15,6 +16,7 @@ export enum Role {
 }
 
 @Entity('users')
+@Unique(['email'])
 export class User extends BaseEntity {
   @PrimaryGeneratedColumn()
   id!: number;

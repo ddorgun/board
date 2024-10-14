@@ -6,6 +6,8 @@ import { Board } from './entities/board.entity';
 import { DataSource, Repository } from 'typeorm';
 import { ServiceException } from 'src/common/exceptions/service.exception';
 import { BoardFile } from './entities/boardFile.entity';
+import { User } from 'src/users/entities/user.entity';
+import { UsersService } from 'src/users/users.service';
 
 @Injectable()
 export class BoardService {
@@ -14,10 +16,15 @@ export class BoardService {
     private boardRepository: Repository<Board>,
     @InjectRepository(BoardFile)
     private boardFileRepository: Repository<BoardFile>,
+    private userService: UsersService,
     private dataSource: DataSource,
   ) {}
 
-  async create(createBoardDto: CreateBoardDto, files?: Express.Multer.File[]) {
+  async create(
+    createBoardDto: CreateBoardDto,
+    currentUser: User,
+    files?: Express.Multer.File[],
+  ) {
     const queryRunner = this.dataSource.createQueryRunner();
     await queryRunner.connect();
     await queryRunner.startTransaction();
@@ -34,8 +41,11 @@ export class BoardService {
         );
       }
 
+      const user = await this.userService.findOneByEmail(currentUser.email);
+
       const board = await this.boardRepository.save({
         ...createBoardDto,
+        createdBy: user,
         boardFiles,
       });
 
@@ -60,7 +70,8 @@ export class BoardService {
   async update(
     id: number,
     updateBoardDto: UpdateBoardDto,
-    files: Express.Multer.File[],
+    currentUser: User,
+    files?: Express.Multer.File[],
   ) {
     const queryRunner = this.dataSource.createQueryRunner();
     await queryRunner.connect();
@@ -68,6 +79,10 @@ export class BoardService {
     const board = await this.findOne(id);
     if (!board) {
       throw new NotFoundException('게지물이 존재하지 않습니다.');
+    }
+    const user = await this.userService.findOneByEmail(currentUser.email);
+    if (board.createdBy.id !== user?.id) {
+      throw new Error('게시물 소유자만 수정할 수 있습니다.');
     }
     try {
       let boardFiles: BoardFile[];
