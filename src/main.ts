@@ -11,6 +11,12 @@ async function bootstrap() {
     .setDescription('The Board API description')
     .setVersion('1.0')
     .addTag('board')
+    .addBearerAuth({
+      type: 'http',
+      scheme: 'bearer',
+      description: 'JWT token',
+      in: 'header',
+    })
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
