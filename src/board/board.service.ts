@@ -70,6 +70,7 @@ export class BoardService {
   async update(
     id: number,
     updateBoardDto: UpdateBoardDto,
+    currentUser: User,
     files?: Express.Multer.File[],
   ) {
     const queryRunner = this.dataSource.createQueryRunner();
@@ -78,6 +79,10 @@ export class BoardService {
     const board = await this.findOne(id);
     if (!board) {
       throw new NotFoundException('게지물이 존재하지 않습니다.');
+    }
+    const user = await this.userService.findOneByEmail(currentUser.email);
+    if (board.createdBy.id !== user?.id) {
+      throw new Error('게시물 소유자만 수정할 수 있습니다.');
     }
     try {
       let boardFiles: BoardFile[];

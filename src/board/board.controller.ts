@@ -51,8 +51,9 @@ export class BoardController {
     @Param('id') id: string,
     @Body() updateBoardDto: UpdateBoardDto,
     @UploadedFiles() files: Express.Multer.File[],
+    @Request() req,
   ) {
-    return this.boardService.update(+id, updateBoardDto, files);
+    return this.boardService.update(+id, updateBoardDto, req.user, files);
   }
 
   @UseGuards(JwtAuthGuard)
