@@ -41,17 +41,6 @@ $ docker compose up
 
 ```
 
-## 실행
-
-도커 컨테이너로 실행 후 pgAdmin 으로 DB접속
-
-- 서버 http://localhost:3000
-- pgadmin http://localhost:5050
-- 테스트 코드는 작성하지 못했습니다.
-- redis token caching을 설계만 하고 개발은 하지 못했습니다.
-- 에러핸들링을 하지 못했습니다.
--
-
 ## 회고
 
 Postgresql 말고는 모두 처음 사용해보는거라 시간이 좀 걸린것 같습니다.
