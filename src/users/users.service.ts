@@ -4,7 +4,10 @@ import { Repository, DataSource } from 'typeorm';
 import { User } from './entities/user.entity';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { ServiceException } from 'src/common/exceptions/service.exception';
+import {
+  InternalServerErrorException,
+  ServiceException,
+} from 'src/common/exceptions/service.exception';
 
 @Injectable()
 export class UsersService {
@@ -24,7 +27,7 @@ export class UsersService {
       return user;
     } catch (error) {
       await queryRunner.rollbackTransaction();
-      throw new ServiceException(error);
+      throw InternalServerErrorException();
     } finally {
       await queryRunner.release();
     }

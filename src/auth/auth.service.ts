@@ -1,9 +1,10 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { UsersService } from '../users/users.service';
 import { CreateUserDto } from 'src/users/dto/create-user.dto';
 import { User } from 'src/users/entities/user.entity';
+import { UnauthorizedException } from 'src/common/exceptions/service.exception';
 
 @Injectable()
 export class AuthService {
@@ -28,7 +29,7 @@ export class AuthService {
   ): Promise<{ access_token: string }> {
     const user = await this.validateUser(email, password);
     if (!user) {
-      throw new UnauthorizedException('이메일 또는 비밀번호가 맞지 않습니다.');
+      throw UnauthorizedException('이메일 또는 비밀번호가 맞지 않습니다.');
     }
 
     const payload = { email: user.email, name: user.name };

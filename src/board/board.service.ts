@@ -1,10 +1,15 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { CreateBoardDto } from './dto/create-board.dto';
 import { UpdateBoardDto } from './dto/update-board.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Board } from './entities/board.entity';
 import { DataSource, Repository } from 'typeorm';
-import { ServiceException } from 'src/common/exceptions/service.exception';
+import {
+  EntityNotFoundException,
+  InternalServerErrorException,
+  ServiceException,
+  UnauthorizedException,
+} from 'src/common/exceptions/service.exception';
 import { BoardFile } from './entities/boardFile.entity';
 import { User } from 'src/users/entities/user.entity';
 import { UsersService } from 'src/users/users.service';
@@ -63,8 +68,10 @@ export class BoardService {
     return this.boardRepository.find();
   }
 
-  findOne(id: number): Promise<Board | null> {
-    return this.boardRepository.findOneBy({ id });
+  async findOne(id: number): Promise<Board> {
+    const board = await this.boardRepository.findOneBy({ id });
+    if (!board) throw EntityNotFoundException('게시물이 존재하지 않습니다.');
+    return board;
   }
 
   async update(
@@ -78,11 +85,11 @@ export class BoardService {
     await queryRunner.startTransaction();
     const board = await this.findOne(id);
     if (!board) {
-      throw new NotFoundException('게지물이 존재하지 않습니다.');
+      throw EntityNotFoundException('게지물이 존재하지 않습니다.');
     }
     const user = await this.userService.findOneByEmail(currentUser.email);
     if (board.createdBy.id !== user?.id) {
-      throw new Error('게시물 소유자만 수정할 수 있습니다.');
+      throw UnauthorizedException('게시물 소유자만 수정할 수 있습니다.');
     }
     try {
       let boardFiles: BoardFile[];
@@ -108,7 +115,7 @@ export class BoardService {
       return result;
     } catch (error) {
       await queryRunner.rollbackTransaction();
-      throw new ServiceException(error);
+      throw InternalServerErrorException();
     } finally {
       await queryRunner.release();
     }

@@ -5,6 +5,7 @@ import * as cookieParser from 'cookie-parser';
 import * as csurf from 'csurf';
 import { AppModule } from './app.module';
 import { ValidationPipe } from './common/pipe/validation.pipe';
+import { ServiceExceptionToHttpExceptionFilter } from './common/filter/http-exception.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
@@ -26,11 +27,13 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
 
-  app.useGlobalPipes(new ValidationPipe());
   app.use(cookieParser());
   // app.use(csurf());
   app.use(helmet());
   app.enableCors();
+
+  app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalFilters(new ServiceExceptionToHttpExceptionFilter());
 
   await app.listen(3000);
 }
