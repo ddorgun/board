@@ -19,12 +19,12 @@ export class UsersService {
     await queryRunner.connect();
     await queryRunner.startTransaction();
     try {
-      const user = this.usersRepository.create(createUserDto);
+      const user = await this.usersRepository.create(createUserDto);
       await queryRunner.commitTransaction();
       return user;
-    } catch (err) {
+    } catch (error) {
       await queryRunner.rollbackTransaction();
-      throw new ServiceException(err);
+      throw new ServiceException(error);
     } finally {
       await queryRunner.release();
     }

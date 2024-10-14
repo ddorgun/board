@@ -1,3 +1,4 @@
+import { Board } from 'src/board/entities/board.entity';
 import {
   Column,
   CreateDateColumn,
@@ -5,6 +6,7 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   BaseEntity,
+  OneToMany,
 } from 'typeorm';
 
 export enum Role {
@@ -40,4 +42,10 @@ export class User extends BaseEntity {
 
   @CreateDateColumn()
   createdAt!: Date;
+
+  @OneToMany(() => Board, (board) => board.createdBy, {
+    eager: false,
+    nullable: true,
+  })
+  boards: Board;
 }
