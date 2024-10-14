@@ -10,12 +10,21 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
+  async validateUser(email: string, pass: string): Promise<any> {
+    const user = await this.usersService.findOneByEmail(email);
+    if (user && user.password === pass) {
+      const { password, ...result } = user;
+      return result;
+    }
+    return null;
+  }
+
   async signin(
-    eamil: string,
+    email: string,
     password: string,
   ): Promise<{ access_token: string }> {
-    const user = await this.usersService.findOneByEmail(eamil);
-    if (user?.password !== password) {
+    const user = await this.validateUser(email, password);
+    if (!user) {
       throw new UnauthorizedException('이메일 또는 비밀번호가 맞지 않습니다.');
     }
 

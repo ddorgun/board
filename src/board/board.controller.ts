@@ -9,6 +9,7 @@ import {
   UseInterceptors,
   UploadedFiles,
   UseGuards,
+  Request,
 } from '@nestjs/common';
 import { BoardService } from './board.service';
 import { CreateBoardDto } from './dto/create-board.dto';
@@ -28,8 +29,9 @@ export class BoardController {
   create(
     @Body() createBoardDto: CreateBoardDto,
     @UploadedFiles() files: Express.Multer.File[],
+    @Request() req,
   ) {
-    return this.boardService.create(createBoardDto, files);
+    return this.boardService.create(createBoardDto, req.user, files);
   }
 
   @Get()

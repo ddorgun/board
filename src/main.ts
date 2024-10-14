@@ -1,10 +1,15 @@
 import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import helmet from 'helmet';
+import * as cookieParser from 'cookie-parser';
+import * as csurf from 'csurf';
 import { AppModule } from './app.module';
 import { ValidationPipe } from './common/pipe/validation.pipe';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, {
+    // logger: console,
+  });
 
   const config = new DocumentBuilder()
     .setTitle('Board example')
@@ -22,6 +27,10 @@ async function bootstrap() {
   SwaggerModule.setup('api', app, document);
 
   app.useGlobalPipes(new ValidationPipe());
+  app.use(cookieParser());
+  // app.use(csurf());
+  app.use(helmet());
+  app.enableCors();
 
   await app.listen(3000);
 }
