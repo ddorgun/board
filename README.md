@@ -24,62 +24,39 @@
 
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+[과제](https://github.com/ddorgun/board) 곰블 과제 게시판
 
-## Project setup
+- NestJs + Postgresql + TypeORM 으로 구성
 
-```bash
-$ npm install
-```
+## 실행
 
-## Compile and run the project
+도커 컨테이너로 실행 후 pgAdmin 으로 DB접속
 
-```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
-```
-
-## Run tests
+- 서버 http://localhost:3000
+- pgadmin http://localhost:5050
 
 ```bash
-# unit tests
-$ npm run test
+# 도커실행
+$ docker compose up
 
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
 ```
 
-## Resources
+## 실행
 
-Check out a few resources that may come in handy when working with NestJS:
+도커 컨테이너로 실행 후 pgAdmin 으로 DB접속
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+- 서버 http://localhost:3000
+- pgadmin http://localhost:5050
+- 테스트 코드는 작성하지 못했습니다.
+- redis token caching을 설계만 하고 개발은 하지 못했습니다.
+- 에러핸들링을 하지 못했습니다.
+-
 
-## Support
+## 회고
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+Postgresql 말고는 모두 처음 사용해보는거라 시간이 좀 걸린것 같습니다.
+좀더 일찍 개발을 시작 할려고 했는데 개인적인 사정으로 하루만에 개발하려고 했지만 부족한점이 많은것 같습니다.
 
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+- 테스트 코드는 작성하지 못했습니다.
+- redis token caching을 설계만 하고 개발은 하지 못했습니다.
+- 에러핸들링을 하지 못했습니다.
