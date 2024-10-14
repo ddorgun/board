@@ -7,6 +7,7 @@ import { DataSource, Repository } from 'typeorm';
 import { ServiceException } from 'src/common/exceptions/service.exception';
 import { BoardFile } from './entities/boardFile.entity';
 import { User } from 'src/users/entities/user.entity';
+import { UsersService } from 'src/users/users.service';
 
 @Injectable()
 export class BoardService {
@@ -15,12 +16,13 @@ export class BoardService {
     private boardRepository: Repository<Board>,
     @InjectRepository(BoardFile)
     private boardFileRepository: Repository<BoardFile>,
+    private userService: UsersService,
     private dataSource: DataSource,
   ) {}
 
   async create(
     createBoardDto: CreateBoardDto,
-    user: User,
+    currentUser: User,
     files?: Express.Multer.File[],
   ) {
     const queryRunner = this.dataSource.createQueryRunner();
@@ -38,6 +40,8 @@ export class BoardService {
           ),
         );
       }
+
+      const user = await this.userService.findOneByEmail(currentUser.email);
 
       const board = await this.boardRepository.save({
         ...createBoardDto,

@@ -6,9 +6,11 @@ import { MulterConfigService } from 'src/common/utils/multer.config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Board } from './entities/board.entity';
 import { BoardFile } from './entities/boardFile.entity';
+import { UserHttpModule } from 'src/users/users-http.module';
 
 @Module({
   imports: [
+    UserHttpModule,
     MulterModule.registerAsync({ useClass: MulterConfigService }),
     TypeOrmModule.forFeature([Board, BoardFile]),
   ],
