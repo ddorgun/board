@@ -7,6 +7,11 @@ import {
   BaseEntity,
 } from 'typeorm';
 
+export enum Role {
+  User = 'user',
+  Admin = 'admin',
+}
+
 @Entity('users')
 export class User extends BaseEntity {
   @PrimaryGeneratedColumn()
@@ -23,6 +28,9 @@ export class User extends BaseEntity {
 
   @Column()
   age: number;
+
+  @Column({ default: Role.User })
+  role: Role;
 
   @Column({ default: true })
   isActive: boolean;
