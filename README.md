@@ -24,7 +24,7 @@
 
 ## Description
 
-[과제](https://github.com/ddorgun/board) 곰블 과제 게시판
+[게시판](https://github.com/ddorgun/board)
 
 - NestJs + Postgresql + TypeORM 으로 구성
 
@@ -40,11 +40,3 @@
 $ docker compose up
 
 ```
-
-## 회고
-
-Postgresql 말고는 모두 처음 사용해보는거라 시간이 좀 걸린것 같습니다.
-좀더 일찍 개발을 시작 할려고 했는데 개인적인 사정으로 하루만에 개발하려고 했지만 부족한점이 많은것 같습니다.
-
-- 테스트 코드는 작성하지 못했습니다.
-- redis token caching을 설계만 하고 개발은 하지 못했습니다.
